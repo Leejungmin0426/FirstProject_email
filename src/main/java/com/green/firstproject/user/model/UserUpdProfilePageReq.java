@@ -6,19 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.beans.ConstructorProperties;
+
 @Getter
 @Setter
-@AllArgsConstructor
 public class UserUpdProfilePageReq {
+    @Schema(name = "profile_user_no", description = "프로필 유저 PK", type = "number", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
+    private long profileUserNo;
 
-    @Schema(title = "응답 코드", description = "상태 코드", example = "200")
-    private int code;
+    @Schema(name = "signed_user_no", description = "로그인한 유저 PK", type = "number", example = "2", requiredMode = Schema.RequiredMode.REQUIRED)
+    private long signedUserNo;
 
-    @Schema(title = "응답 메시지", description = "결과 메시지", example = "OK")
-    private String message;
-
-    @Schema(title = "변경된 프로필 사진 파일명", description = "변경 후 저장된 프로필 사진 파일명", nullable = true)
-    private String savedPicName;
-
-
+    @ConstructorProperties({"signed_user_no", "profile_user_no"})
+    public UserUpdProfilePageReq(long signedUserNo, long profileUserNo){
+        this.signedUserNo = signedUserNo;
+        this.profileUserNo = profileUserNo;
+    }
 }

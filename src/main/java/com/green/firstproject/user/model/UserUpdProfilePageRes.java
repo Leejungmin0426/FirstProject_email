@@ -1,24 +1,25 @@
 package com.green.firstproject.user.model;
 
+import com.green.firstproject.common.ResponseCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.beans.ConstructorProperties;
+
+import com.green.firstproject.common.ResponseResult;
+import com.green.firstproject.user.model.dto.UserInfo;
 
 
 @Getter
 @Setter
-public class UserUpdProfilePageRes {
-    @Schema(name = "profile_user_no", description = "프로필 유저 PK", type = "number", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
-    private long profileUserNo;
+@Schema(title = "프로필 수정 페이지 응답")
+public class UserUpdProfilePageRes extends ResponseResult {
 
-    @Schema(name = "signed_user_no", description = "로그인한 유저 PK", type = "number", example = "2", requiredMode = Schema.RequiredMode.REQUIRED)
-    private long signedUserNo;
+    @Schema(title = "수정 대상 사용자 정보", description = "수정하려는 사용자의 프로필 정보")
+    private UserInfo userInfo;
 
-    @ConstructorProperties({"signed_user_no", "profile_user_no"})
-    public UserUpdProfilePageRes(long signedUserNo, long profileUserNo){
-        this.signedUserNo = signedUserNo;
-        this.profileUserNo = profileUserNo;
+    public UserUpdProfilePageRes(String code, UserInfo userInfo) {
+        super(code); // ResponseResult의 생성자 호출
+        this.userInfo = userInfo;
     }
 }

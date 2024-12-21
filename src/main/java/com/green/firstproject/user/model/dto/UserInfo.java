@@ -24,6 +24,9 @@ public class UserInfo {
     @Schema(title = "유저넘버", description = "유저 고유 넘버", requiredMode = Schema.RequiredMode.REQUIRED)
     private long userNo;
 
+    @Schema(title = "첫 로그인 여부", description = "첫 로그인 여부를 나타내는 값", example = "true")
+    private boolean firstLogin;
+
     @JsonIgnore
     private String password;
 

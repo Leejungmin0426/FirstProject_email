@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration debug="true">
     <!-- 로그 찍을 때 색상 설정용 color라는 이름으로 색상 지정을 하겠다. -->
-    <conversionRule conversionWord="color" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="color" class="org.springframework.boot.logging.logback.ColorConverter" />
     <!-- ./ 현재 위치(프로그램이 실행되는 위치) , LOG_PATH 변수 만듬 -->
     <property name="LOG_PATH" value="./logs" />
     <property name="LOG_FILE_NAME" value="logInfo" />

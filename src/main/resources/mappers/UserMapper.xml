@@ -2,7 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.green.firstproject.user.UserMapper">
+    <!-- 1. 사용자 로그인 -->
+    <select id="userSignIn">
+        SELECT
+        user_no AS userNo,
+        password,
+        nickname,
+        email,
+        profile_pic AS profilePic,
+        first_login AS firstLogin,
+        status_message AS userStatusMessage
+        FROM user
+        WHERE email = #{email}
+    </select>
 
+    <!-- 2. 사용자 정보 조회 -->
+    <select id="selUserInfo">
+        SELECT
+        email,
+        nickname,
+        status_message AS userStatusMessage,
+        profile_pic AS profilePic
+        FROM user
+        WHERE user_no = #{profileUserNo}
+        AND user_no = #{signedUserNo};
+    </select>
+
+    <!-- 3. 프로필 수정 페이지 데이터 조회 -->
+    <select id="getUdpProfilePage">
+        SELECT
+        user_no AS userNo,
+        nickname,
+        email,
+        profile_pic AS profilePic,
+        status_message AS userStatusMessage
+        FROM user
+        WHERE user_no = #{profileUserNo}
+    </select>
+
+    <!-- 4. 닉네임 중복 체크 -->
+    <select id="checkNicknameExists">
+        SELECT COUNT(*) > 0
+        FROM user
+        WHERE nickname = #{nickname}
+    </select>
+
+    <!-- 5. 사용자 정보 업데이트 -->
+    <update id="updUserProfile">
+        UPDATE user
+        SET
+        nickname = #{nickname},
+        password = #{password},
+        profile_pic = #{profilePicName},
+        status_message = #{statusMessage},
+        WHERE user_no = #{userNo}
+    </update>
 
 
 
