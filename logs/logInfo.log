@@ -2763,3 +2763,31 @@ Caused by: java.lang.ClassNotFoundException: Cannot find class: com.green.firstp
 [2024-12-21 15:56:33 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] Started FirstProjectApplication in 1.652 seconds (process running for 2.014)
 [2024-12-21 15:56:37 INFO http-nio-8080-exec-4] [org.springframework.web.servlet.DispatcherServlet] Initializing Servlet 'dispatcherServlet'
 [2024-12-21 15:56:37 INFO http-nio-8080-exec-4] [org.springframework.web.servlet.DispatcherServlet] Completed initialization in 0 ms
+[2024-12-21 15:58:55 INFO SpringApplicationShutdownHook] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] Commencing graceful shutdown. Waiting for active requests to complete
+[2024-12-21 15:58:55 INFO tomcat-shutdown] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] Graceful shutdown complete
+[2024-12-21 15:58:57 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] Starting FirstProjectApplication using Java 17.0.12 with PID 476 (D:\LJM\FirstProject\build\classes\java\main started by Administrator in D:\LJM\FirstProject)
+[2024-12-21 15:58:57 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] No active profile set, falling back to 1 default profile: "default"
+[2024-12-21 15:58:58 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2024-12-21 15:58:58 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2024-12-21 15:58:58 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 8080 (http)
+[2024-12-21 15:58:58 INFO restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 783 ms
+[2024-12-21 15:58:58 INFO restartedMain] [com.green.firstproject.common.MyFileUtils] MyFileUtils - 생성자: D:/2024-02/download/FirstProject
+[2024-12-21 15:58:59 INFO restartedMain] [org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean] Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+[2024-12-21 15:58:59 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2024-12-21 15:58:59 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 8080 (http) with context path '/'
+[2024-12-21 15:58:59 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] Started FirstProjectApplication in 1.634 seconds (process running for 1.968)
+[2024-12-21 15:59:03 INFO http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Initializing Servlet 'dispatcherServlet'
+[2024-12-21 15:59:03 INFO http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Completed initialization in 1 ms
+[2024-12-21 15:59:09 INFO File Watcher] [org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener] Restarting due to 4 class path changes (0 additions, 0 deletions, 4 modifications)
+[2024-12-21 15:59:09 INFO Thread-5] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] Commencing graceful shutdown. Waiting for active requests to complete
+[2024-12-21 15:59:09 INFO tomcat-shutdown] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] Graceful shutdown complete
+[2024-12-21 15:59:09 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] Starting FirstProjectApplication using Java 17.0.12 with PID 476 (D:\LJM\FirstProject\build\classes\java\main started by Administrator in D:\LJM\FirstProject)
+[2024-12-21 15:59:09 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] No active profile set, falling back to 1 default profile: "default"
+[2024-12-21 15:59:10 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 8080 (http)
+[2024-12-21 15:59:10 INFO restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 191 ms
+[2024-12-21 15:59:10 INFO restartedMain] [com.green.firstproject.common.MyFileUtils] MyFileUtils - 생성자: D:/2024-02/download/FirstProject
+[2024-12-21 15:59:10 INFO restartedMain] [org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean] Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+[2024-12-21 15:59:10 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2024-12-21 15:59:10 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 8080 (http) with context path '/'
+[2024-12-21 15:59:10 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] Started FirstProjectApplication in 0.332 seconds (process running for 12.915)
+[2024-12-21 15:59:10 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] Condition evaluation unchanged
