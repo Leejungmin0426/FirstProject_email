@@ -19,10 +19,10 @@ public class UserInfo {
     @Schema(title = "사용자 본인 상태 메시지", description = "사용자의 상태 메시지 (null 허용)", example = "Just do it!")
     private String userStatusMessage; // 상태 메시지
 
-    @Schema(title = "프로필 사진", description = "프로필 사진의 URL 또는 null 허용", example = "https://example.com/profile.jpg")
+    @Schema(title = "프로필 사진", description = "프로필 사진의 URL 또는 null 허용")
     private String profilePic; // 프로필 사진 URL
 
-    @Schema(title = "유저 넘버", description = "유저 고유 넘버", requiredMode = Schema.RequiredMode.REQUIRED, example = "3")
+    @Schema(title = "유저 넘버", description = "유저 고유 넘버", example = "3", requiredMode = Schema.RequiredMode.REQUIRED)
     private long userNo;
 
     @Schema(title = "첫 로그인 여부", description = "첫 로그인 여부를 나타내는 값", example = "true")

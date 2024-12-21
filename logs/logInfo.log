@@ -3484,3 +3484,40 @@ org.apache.ibatis.reflection.ReflectionException: There is no getter for propert
 |------|---------|---------------|------------|
 |------|---------|---------------|------------|
 
+[2024-12-21 16:20:11 INFO SpringApplicationShutdownHook] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] Commencing graceful shutdown. Waiting for active requests to complete
+[2024-12-21 16:20:11 INFO tomcat-shutdown] [org.springframework.boot.web.embedded.tomcat.GracefulShutdown] Graceful shutdown complete
+[2024-12-21 16:20:11 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2024-12-21 16:20:11 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[2024-12-21 16:20:14 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] Starting FirstProjectApplication using Java 17.0.12 with PID 2416 (D:\LJM\FirstProject\build\classes\java\main started by Administrator in D:\LJM\FirstProject)
+[2024-12-21 16:20:14 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] No active profile set, falling back to 1 default profile: "default"
+[2024-12-21 16:20:14 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2024-12-21 16:20:14 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2024-12-21 16:20:14 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 8080 (http)
+[2024-12-21 16:20:14 INFO restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 775 ms
+[2024-12-21 16:20:14 INFO restartedMain] [com.green.firstproject.common.MyFileUtils] MyFileUtils - 생성자: D:/2024-02/download/FirstProject
+[2024-12-21 16:20:15 INFO restartedMain] [org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean] Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+[2024-12-21 16:20:15 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2024-12-21 16:20:15 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 8080 (http) with context path '/'
+[2024-12-21 16:20:15 INFO restartedMain] [com.green.firstproject.FirstProjectApplication] Started FirstProjectApplication in 1.646 seconds (process running for 1.996)
+[2024-12-21 16:20:19 INFO http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Initializing Servlet 'dispatcherServlet'
+[2024-12-21 16:20:19 INFO http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] Completed initialization in 1 ms
+[2024-12-21 16:20:19 INFO http-nio-8080-exec-1] [com.green.firstproject.user.UserController] API Request - signedUserNo: 3, profileUserNo: 3
+[2024-12-21 16:20:19 INFO http-nio-8080-exec-1] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-12-21 16:20:19 INFO http-nio-8080-exec-1] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection net.sf.log4jdbc.sql.jdbcapi.ConnectionSpy@4ff0c16c
+[2024-12-21 16:20:19 INFO http-nio-8080-exec-1] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2024-12-21 16:20:19 DEBUGhttp-nio-8080-exec-1] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT
+        email,
+        nickname,
+        status_message AS userStatusMessage,
+        profile_pic AS profilePic
+        FROM user
+        WHERE user_no = 3
+        AND user_no = 3;
+ {executed in 0 msec}
+[2024-12-21 16:20:19 INFO http-nio-8080-exec-1] [jdbc.resultsettable] 
+|------|---------|---------------|------------|
+|email |nickname |status_message |profile_pic |
+|------|---------|---------------|------------|
+|------|---------|---------------|------------|
+
