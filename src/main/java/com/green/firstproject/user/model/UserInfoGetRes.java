@@ -12,6 +12,12 @@ public class UserInfoGetRes extends ResponseResult {
     @Schema(title = "사용자 정보")
     private UserInfo userInfo;
 
+    // 기본 생성자
+    public UserInfoGetRes() {
+        super(""); // 기본값 처리
+    }
+
+    // 매개변수 생성자
     public UserInfoGetRes(String code, UserInfo userInfo) {
         super(code); // ResponseResult의 생성자 호출
         this.userInfo = userInfo;

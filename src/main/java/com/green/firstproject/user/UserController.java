@@ -5,11 +5,13 @@ import com.green.firstproject.user.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 @RequestMapping("user")
 public class UserController {
 
@@ -26,18 +28,15 @@ public class UserController {
 
     // 2. 사용자 정보 조회 (GET)
     @GetMapping("/{signedUserNo}")
-    @Operation(summary = "사용자 정보 조회", description = "RequestParam을 이용해 사용자 정보를 조회")
     public ResponseResult selUserInfo(
-            @Parameter(description = "로그인한 유저 PK", example = "3") @PathVariable long signedUserNo,
-            @Parameter(description = "프로필 유저 PK", example = "3") @RequestParam("profileUserNo") long profileUserNo) {
+            @PathVariable long signedUserNo,
+            @RequestParam long profileUserNo) {
 
-        // 요청 객체 생성
+        log.info("API Request - signedUserNo: {}, profileUserNo: {}", signedUserNo, profileUserNo);
+
         UserInfoGetReq p = new UserInfoGetReq(signedUserNo, profileUserNo);
-
-        // 서비스 호출 후 결과 반환
         return service.selUserInfo(p);
     }
-
 
     // 3. 프로필 수정 페이지 (GET)
     @GetMapping("/edit/{userNo}")
