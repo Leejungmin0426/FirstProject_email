@@ -4,8 +4,11 @@ import com.green.firstproject.common.MyFileUtils;
 import com.green.firstproject.common.ResponseCode;
 import com.green.firstproject.common.ResponseResult;
 import com.green.firstproject.user.model.*;
+import com.green.firstproject.user.model.dto.PasswordUtils;
 import com.green.firstproject.user.model.dto.UserInfo;
+import com.green.firstproject.user.model.dto.UserLoginInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +17,11 @@ import java.util.UUID;
 
 import java.io.IOException;
 
+import static com.green.firstproject.user.model.dto.PasswordUtils.isValidPasswordFormat;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserMapper mapper;
@@ -26,24 +32,24 @@ public class UserService {
     public ResponseResult userSignIn(UserSignInReq p) {
         // 요청 데이터 검증
         if (p == null || p.getEmail() == null || p.getEmail().isEmpty()) {
-            return ResponseResult.incorrectEmail(); // 이메일이 없거나 비어 있을 경우
+            return ResponseResult.badRequest(ResponseCode.INCORRECT_EMAIL); // 이메일이 없거나 비어 있을 경우
         }
 
         if (p.getPassword() == null || p.getPassword().isEmpty()) {
-            return ResponseResult.incorrectPassword(); // 비밀번호가 없거나 비어 있을 경우
+            return ResponseResult.badRequest(ResponseCode.INCORRECT_PASSWORD); // 비밀번호가 없거나 비어 있을 경우
         }
 
         // 매퍼 메서드를 호출하여 사용자 조회
-        UserInfo info = mapper.userSignIn(p.getEmail());
+        UserLoginInfo info = mapper.userSignIn(p.getEmail());
         if (info == null) {
-            return ResponseResult.noExistUser(); // 사용자 정보가 없을 경우
+            return ResponseResult.badRequest(ResponseCode.NO_EXIST_USER); // 사용자 정보가 없을 경우
         }
 
         // 비밀번호 검증
         if (!BCrypt.checkpw(p.getPassword(), info.getPassword())) {
             System.out.println("입력된 비밀번호: " + p.getPassword());
             System.out.println("DB 저장된 해시 비밀번호: " + info.getPassword());
-            return ResponseResult.incorrectPassword(); // 비밀번호 불일치
+            return ResponseResult.badRequest(ResponseCode.INCORRECT_PASSWORD); // 비밀번호 불일치
         }
 
         // 첫 로그인 여부 확인
@@ -54,114 +60,76 @@ public class UserService {
     }
 
 
-
+    @Transactional
     public ResponseResult selUserInfo(UserInfoGetReq p) {
-        // 요청 데이터 유효성 검사
-        if (p.getSignedUserNo() <= 0 || p.getProfileUserNo() <= 0) {
-            return ResponseResult.noExistUser(); // 잘못된 요청
+        log.debug("Service Request: {}", p);
+
+        // MyBatis 매퍼에서 UserInfo 객체 반환
+        UserInfo userInfo = mapper.selUserInfo(p);
+        log.debug("Mapper Result: {}", userInfo);
+
+        // 매퍼 결과가 null이면 사용자 정보가 없음을 반환
+        if (userInfo == null) {
+            return ResponseResult.badRequest(ResponseCode.NO_EXIST_USER);
         }
 
-        // 두 값이 같은지 확인
-        if (p.getSignedUserNo() != p.getProfileUserNo()) {
-            return ResponseResult.noPermission(); // 권한 없음 응답
-        }
-
-        // 사용자 정보 조회
-        UserInfoGetRes res = mapper.selUserInfo(p);
-        if (res == null) {
-            return ResponseResult.noExistUser(); // 사용자 정보 없음
-        }
-
-        // 성공 응답 생성
-        return new UserInfoGetRes(ResponseCode.OK.getCode(), res.getUserInfo());
+        // UserInfo를 UserInfoGetRes로 래핑하여 반환
+        return new UserInfoGetRes(ResponseCode.OK.getCode(), userInfo);
     }
-
 
 
     @Transactional
     public ResponseResult updUserProfile(UserUpdProfileReq p) {
-        // 요청 데이터 검증
-        if (p == null) {
-            return ResponseResult.noExistUser(); // 요청 데이터가 없을 경우
+        // 1. 비밀번호 검증
+        if (p.getPassword() != null && !p.getPassword().equals(p.getPasswordConfim())) {
+            return ResponseResult.badRequest(ResponseCode.INCORRECT_PASSWORD); // 비밀번호 불일치
         }
 
-        // 비밀번호 형식 검증
-        if (!isValidPasswordFormat(p.getPassword())) {
-            return ResponseResult.passwordFormatError(); // 비밀번호 형식 에러
+        // 2. 닉네임 중복 체크
+        if (p.getNickname() != null) {
+            Boolean isNicknameExists = mapper.checkNicknameExists(p.getNickname());
+            if (isNicknameExists != null && isNicknameExists) {
+                return ResponseResult.badRequest(ResponseCode.DUPLICATE_NICKNAME); // 닉네임 중복
+            }
         }
 
-        // 비밀번호 확인 체크
-        if (!p.getPassword().equals(p.getPasswordConfim())) {
-            return ResponseResult.passwordCheckError(); // 비밀번호 확인 에러
+        // 3. 프로필 사진 처리
+        if (p.getProfilePic() != null && !p.getProfilePic().isEmpty()) {
+            try {
+                String userFolder = String.format("user/%d", p.getSignedUserNo());
+
+                // 기존 폴더 삭제 후 새 폴더 생성
+                myFileUtils.deleteFolder(myFileUtils.getUploadPath() + "/" + userFolder, false);
+                myFileUtils.makeFolders(userFolder);
+
+                // 랜덤 파일 이름 생성 및 파일 저장
+                String randomFileName = myFileUtils.makeRandomFileName(p.getProfilePic());
+                String filePath = String.format("%s/%s", userFolder, randomFileName);
+                myFileUtils.transferTo(p.getProfilePic(), filePath);
+
+                // 저장된 파일명을 설정
+                p.setProfilePicName(randomFileName);
+
+            } catch (IOException e) {
+                log.error("Failed to save profile picture for signedUserNo: {}", p.getSignedUserNo(), e);
+                return ResponseResult.serverError(); // 파일 저장 실패
+            }
         }
 
-        // 닉네임 중복 체크
-        if (mapper.checkNicknameExists(p.getNickname())) {
-            return ResponseResult.duplicateNickname(); // 닉네임 중복 에러
+        // 4. 비밀번호 암호화
+        if (p.getPassword() != null) {
+            p.setPassword(BCrypt.hashpw(p.getPassword(), BCrypt.gensalt())); // 비밀번호 암호화
         }
 
-        // 프로필 사진 처리
-        String savedPicName = UUID.randomUUID().toString(); // 고유한 파일 이름 생성
-        String filePath = String.format("user/%d/%s", p.getUserNo(), savedPicName);
-
-        try {
-            myFileUtils.transferTo(p.getProfilePic(), filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseResult.serverError(); // 파일 저장 실패 시 서버 에러 반환
-        }
-
-        // 비밀번호 암호화 및 DB 업데이트
-        p.setPassword(BCrypt.hashpw(p.getPassword(), BCrypt.gensalt())); // 비밀번호 암호화
-        p.setProfilePicName(savedPicName); // 저장된 파일명을 DB에 반영
-
+        // 5. 데이터베이스 업데이트
         int updatedRows = mapper.updUserProfile(p);
         if (updatedRows <= 0) {
-            return ResponseResult.serverError(); // 업데이트 실패 시 서버 에러 반환
+            log.error("Failed to update user profile for signedUserNo: {}", p.getSignedUserNo());
+            return ResponseResult.serverError(); // 업데이트 실패
         }
 
-        return ResponseResult.success(); // 성공 메시지
-    }
-
-    // 4. 프로필 사진 처리
-    private ResponseResult patchUserPic(MultipartFile profilePic, String email) throws IOException {
-        String savedPicName = myFileUtils.makeRandomFileName(profilePic); // 랜덤 파일명 생성
-        String folderPath = String.format("user/%s", email); // 폴더 경로 생성
-        myFileUtils.makeFolders(folderPath); // 폴더 생성
-
-        // 기존 파일 삭제
-        String deletePath = String.format("%s/%s", myFileUtils.getUploadPath(), folderPath);
-        myFileUtils.deleteFolder(deletePath, false);
-
-        // 새 파일 저장
-        String filePath = String.format("%s/%s", folderPath, savedPicName);
-        myFileUtils.transferTo(profilePic, filePath);
-
+        // 6. 성공 응답 반환
         return ResponseResult.success();
     }
 
-    // 5. 비밀번호 형식 검증
-    private boolean isValidPasswordFormat(String password) {
-        if (password == null) return false;
-        return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$");
-    }
-
-
-    public ResponseResult getUpdProfilePage(UserUpdProfilePageReq p) {
-        // 요청 데이터 검증
-        if (p == null || p.getSignedUserNo() <= 0 || p.getProfileUserNo() <= 0) {
-            return ResponseResult.noExistUser(); // 잘못된 요청 데이터 처리
-        }
-
-        // 사용자 프로필 페이지 데이터 조회
-        UserUpdProfilePageRes res = mapper.getUdpProfilePage(p); // mapper를 통해 데이터베이스 조회
-
-        // 권한 검증
-        if (p.getSignedUserNo() != p.getProfileUserNo()) {
-            return ResponseResult.noPermission(); // 권한 없음
-        }
-
-        // 성공 응답 반환
-        return res;
-    }
 }

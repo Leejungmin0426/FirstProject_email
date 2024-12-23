@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green.firstproject.project.ProjectMapper">
+
+    <!-- 프로젝트 상세 조회 -->
+    <select id="getProjectById">
+        SELECT
+        project_no AS projectNo,
+        leader_no AS leaderNo,
+        title,
+        description,
+        start_at AS startAt,
+        deadline AS deadLine
+        FROM project
+        WHERE project_no = #{projectNo}
+    </select>
+
+    <!-- 프로젝트 수정 -->
+    <update id="updateProject">
+        UPDATE project
+        <set>
+            <if test="name != null">title = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="startAt != null">start_at = #{startAt},</if>
+            <if test="deadLine != null">deadline = #{deadLine}</if>
+        </set>
+        WHERE project_no = #{projectNo}
+    </update>
+
+    <!-- 프로젝트 멤버 조회 -->
+    <select id="getProjectMembers">
+        SELECT
+        A.user_no AS userNo,
+        A.nickname AS nickname,
+        A.profile_pic AS userProfilePic
+        FROM user A
+        INNER JOIN user_project B ON A.user_no = B.user_no
+        WHERE B.project_no = #{projectNo}
+    </select>
+
+</mapper>

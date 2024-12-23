@@ -1,5 +1,8 @@
 mybatis:
   mapper-locations: mappers/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
 
 
 file:
@@ -21,7 +24,8 @@ spring:
     multipart:
       max-file-size: 15MB
       maxRequestSize: 30MB
-
+  jackson:
+    default-property-inclusion: non-null #응답 JSON을 만들 때 null인 속성은 제외
 
 
 springdoc:

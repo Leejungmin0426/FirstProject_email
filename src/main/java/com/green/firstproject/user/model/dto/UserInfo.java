@@ -1,6 +1,4 @@
 package com.green.firstproject.user.model.dto;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +7,9 @@ import lombok.Setter;
 @Setter
 @Schema(title = "사용자 정보")
 public class UserInfo {
+
+    @Schema(title = "유저 번호")
+    private Long signedUserNo;
 
     @Schema(title = "사용자 본인 이메일", example = "miniming@naver.com", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
@@ -22,23 +23,4 @@ public class UserInfo {
     @Schema(title = "프로필 사진", description = "프로필 사진의 URL 또는 null 허용")
     private String profilePic; // 프로필 사진 URL
 
-    @Schema(title = "유저 넘버", description = "유저 고유 넘버", example = "3", requiredMode = Schema.RequiredMode.REQUIRED)
-    private long userNo;
-
-    @Schema(title = "첫 로그인 여부", description = "첫 로그인 여부를 나타내는 값", example = "true")
-    private boolean firstLogin;
-
-    @JsonIgnore
-    private String password; // 비밀번호는 숨김 처리
-
-
-    // 전체 필드를 포함한 생성자 추가 (MyBatis 매핑 시 유용)
-    public UserInfo(String email, String nickname, String userStatusMessage, String profilePic, long userNo, boolean firstLogin) {
-        this.email = email;
-        this.nickname = nickname;
-        this.userStatusMessage = userStatusMessage;
-        this.profilePic = profilePic;
-        this.userNo = userNo;
-        this.firstLogin = firstLogin;
-    }
 }
