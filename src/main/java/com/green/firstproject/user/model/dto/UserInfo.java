@@ -8,19 +8,15 @@ import lombok.Setter;
 @Schema(title = "사용자 정보")
 public class UserInfo {
 
-    @Schema(title = "유저 번호")
-    private Long signedUserNo;
-
-    @Schema(title = "사용자 본인 이메일", example = "miniming@naver.com", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "이메일", description = "사용자 이메일", example = "example@example.com")
     private String email;
 
-    @Schema(title = "사용자 본인 닉네임", example = "minimini", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "닉네임", description = "사용자 닉네임", example = "userNickname")
     private String nickname;
 
-    @Schema(title = "사용자 본인 상태 메시지", description = "사용자의 상태 메시지 (null 허용)", example = "Just do it!")
-    private String userStatusMessage; // 상태 메시지
+    @Schema(title = "상태 메시지", description = "사용자의 상태 메시지", example = "Hello World!")
+    private String userStatusMessage;
 
-    @Schema(title = "프로필 사진", description = "프로필 사진의 URL 또는 null 허용")
-    private String profilePic; // 프로필 사진 URL
-
+    @Schema(title = "프로필 사진", description = "사용자 프로필 사진 URL", example = "profile.jpg")
+    private String profilePic;
 }

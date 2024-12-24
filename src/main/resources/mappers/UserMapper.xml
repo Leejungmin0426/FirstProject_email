@@ -3,6 +3,7 @@
 
 <mapper namespace="com.green.firstproject.user.UserMapper">
 
+
     <!-- 1. 사용자 로그인 -->
     <select id="userSignIn">
         SELECT
@@ -17,38 +18,18 @@
         WHERE email = #{email}
     </select>
 
+
     <!-- 2. 사용자 정보 조회 -->
-    <select id="selUserInfo" resultType="com.green.firstproject.user.model.dto.UserInfo">
+
+    <select id="selUserInfo">
         SELECT
-        email,
-        nickname,
-        status_message AS userStatusMessage,
-        profile_pic AS profilePic
-        FROM user
-        WHERE user_no = #{targetUserNo}
+        u2.email,
+        u2.nickname,
+        u2.status_message AS userStatusMessage,
+        u2.profile_pic AS profilePic
+        FROM user u1
+        JOIN user u2
+        ON u1.user_no = #{signedUserNo}
+        WHERE u2.user_no = #{targetUserNo};
     </select>
-
-
-    <!-- 4. 닉네임 중복 체크 -->
-    <select id="checkNicknameExists">
-        SELECT COUNT(*) > 0
-        FROM user
-        WHERE nickname = #{nickname}
-    </select>
-
-    <!-- 5. 사용자 정보 업데이트 -->
-    <update id="updUserProfile">
-        UPDATE user
-        SET
-        <if test="nickname != null">nickname = #{nickname},</if>
-        <if test="password != null">password = #{password},</if>
-        <if test="profilePicName != null">profile_pic = #{profilePicName},</if>
-        <if test="userStatusMessage != null">status_message = #{userStatusMessage}</if>
-        WHERE user_no = #{signedUserNo}
-    </update>
-
-
-
-
-
 </mapper>

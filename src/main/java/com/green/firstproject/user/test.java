@@ -1,5 +1,7 @@
 package com.green.firstproject.user;
 
+import com.green.firstproject.user.model.UserInfoGetReq;
+import com.green.firstproject.user.model.dto.UserInfo;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class test {
@@ -12,5 +14,6 @@ public class test {
         } else {
             System.out.println("비밀번호가 일치하지 않습니다!");
         }
+
     }
 }

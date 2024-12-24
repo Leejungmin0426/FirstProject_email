@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green.firstproject.home.HomeMapper">
+
+    <!-- 유저별 프로젝트 조회 -->
+    <select id="getHomeProjects">
+        SELECT
+        project_no AS projectNo,
+        title AS projectName,
+        start_at AS startAt,
+        dead_line AS deadLine
+        FROM project
+        WHERE user_no = #{signedUserNo}
+        ORDER BY start_at ASC;
+    </select>
+
+</mapper>

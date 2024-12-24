@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(title = "사용자 로그인 정보")
-public class UserLoginInfo   {
+public class UserLoginInfo {
 @Schema(title = "사용자 본인 이메일", example = "miniming@naver.com", requiredMode = Schema.RequiredMode.REQUIRED)
 private String email;
 

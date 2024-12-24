@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration debug="true">
     <!-- 로그 찍을 때 색상 설정용 color라는 이름으로 색상 지정을 하겠다. -->
-    <conversionRule conversionWord="color" class="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="color" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
     <!-- ./ 현재 위치(프로그램이 실행되는 위치) , LOG_PATH 변수 만듬 -->
     <property name="LOG_PATH" value="./logs" />
     <property name="LOG_FILE_NAME" value="logInfo" />
@@ -37,18 +37,6 @@
     <logger name="jdbc.resultset" level="OFF"/>
     <logger name="jdbc.resultsettable" level="DEBUG"/>
     <logger name="jdbc.connection" level="OFF"/>
-
-    <encoder>
-        <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-        <evaluator>
-            <expression>msg.contains("Client IP")</expression> <!-- "Client IP" 포함된 로그만 출력 -->
-        </evaluator>
-        <onMatch>ACCEPT</onMatch>
-        <onMismatch>DENY</onMismatch>
-    </filter>
-
 
     <!-- TRACE > DEBUG > INFO > WARN > ERROR -->
     <!-- level="INFO"는 INFO, WARN, ERROR 로그만 파일로 만들어지고 콘솔에 찍히게 된다. -->

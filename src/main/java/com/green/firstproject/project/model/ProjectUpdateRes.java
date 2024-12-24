@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ProjectUpdateRes extends ResponseResult {
-    private String name;
+    private String title;
 
     private String description;
     private String startAt;
@@ -21,7 +21,7 @@ public class ProjectUpdateRes extends ResponseResult {
 
     public ProjectUpdateRes(ResponseCode code, Project project) {
         super(code.getCode());
-        this.name = project.getTitle();
+        this.title = project.getTitle();
         this.description = project.getDescription();
         this.startAt = project.getStartAt();
         this.deadLine = project.getDeadLine();

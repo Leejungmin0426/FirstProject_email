@@ -22,7 +22,7 @@
     <update id="updateProject">
         UPDATE project
         <set>
-            <if test="name != null">title = #{name},</if>
+            <if test="title != null">title = #{title},</if>
             <if test="description != null">description = #{description},</if>
             <if test="startAt != null">start_at = #{startAt},</if>
             <if test="deadLine != null">deadline = #{deadLine}</if>

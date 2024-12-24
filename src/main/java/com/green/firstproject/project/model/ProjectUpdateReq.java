@@ -12,7 +12,7 @@ import java.util.List;
 public class ProjectUpdateReq {
     private long projectNo; // 프로젝트 번호
     private long signedUserNo; // 요청 사용자 번호
-    private String name; // 프로젝트 이름
+    private String title; // 프로젝트 이름
     private String description; // 프로젝트 설명
     private String startAt; // 시작 날짜
     private String deadLine; // 마감 날짜

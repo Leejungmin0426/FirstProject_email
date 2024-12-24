@@ -15,5 +15,4 @@ public class UserSignInRes extends ResponseResult {
         super(code); // ResponseResult의 생성자 호출
         this.firstLogin = firstLogin;
     }
-
 }
