@@ -18,9 +18,10 @@ public class HomeController {
 
     @GetMapping
     public ResponseResult getHome(
-            @RequestParam("signed_user_no") long signedUserNo
+            @RequestParam("signed_user_no") long signedUserNo,
+            @RequestParam("date") String date
     ) {
-        log.info("Fetching home screen for signedUserNo={}", signedUserNo);
-        return homeService.getHome(signedUserNo);
+        log.info("Fetching home screen for signedUserNo={} on date={}", signedUserNo, date);
+        return homeService.getHome(signedUserNo, date);
     }
 }

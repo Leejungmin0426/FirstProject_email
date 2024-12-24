@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -21,17 +22,19 @@ public class HomeService {
     private final HomeMapper mapper;
 
     @Transactional(readOnly = true)
-    public ResponseResult getHome(long signedUserNo) {
-        log.info("Fetching projects for signedUserNo={}", signedUserNo);
+    public ResponseResult getHome(long leaderNo, String date) {
+        log.info("Fetching projects for signedUserNo={} on date={}", leaderNo, date);
 
         // DB에서 프로젝트 리스트 조회
-        List<Project> projects = mapper.getHomeProjects(signedUserNo);
+        List<Project> projects = mapper.getHomeProjects(leaderNo, date);
 
+        // 프로젝트 리스트가 없을 경우 빈 리스트 반환
         if (projects == null || projects.isEmpty()) {
-            log.warn("No projects found for signedUserNo={}", signedUserNo);
-            return ResponseResult.success(); // 빈 응답
+            log.warn("No projects found for signedUserNo={} on date={}", leaderNo, date);
+            return new HomeGetRes(ResponseCode.OK.getCode(), Collections.emptyList()); // 빈 리스트 반환
         }
 
+        // 프로젝트 리스트를 포함하여 성공 응답 반환
         return new HomeGetRes(ResponseCode.OK.getCode(), projects);
     }
 }

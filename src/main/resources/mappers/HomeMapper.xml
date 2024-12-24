@@ -8,13 +8,15 @@
     <!-- 유저별 프로젝트 조회 -->
     <select id="getHomeProjects">
         SELECT
-        project_no AS projectNo,
-        title AS projectName,
-        start_at AS startAt,
-        dead_line AS deadLine
-        FROM project
-        WHERE user_no = #{signedUserNo}
-        ORDER BY start_at ASC;
+        p.project_no AS projectNo,
+        p.title,
+        p.start_at AS startAt,
+        p.deadline AS deadLine,
+        p.description
+        FROM project p
+        JOIN user_project up ON p.project_no = up.project_no
+        WHERE up.user_no = #{signedUserNo}
+        ORDER BY p.start_at ASC;
     </select>
 
 </mapper>

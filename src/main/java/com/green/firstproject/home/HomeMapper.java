@@ -10,5 +10,5 @@ import java.util.List;
 public interface HomeMapper {
 
 
-    List<Project> getHomeProjects(long signedUserNo);
+    List<Project> getHomeProjects( long signedUserNo, String date);
 }
