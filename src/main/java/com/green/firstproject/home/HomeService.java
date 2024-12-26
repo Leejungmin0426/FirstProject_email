@@ -1,8 +1,7 @@
 package com.green.firstproject.home;
 
-import com.green.firstproject.common.ResponseCode;
-import com.green.firstproject.common.ResponseResult;
-import com.green.firstproject.home.model.HomeGetReq;
+import com.green.firstproject.common.exception.ResponseCode;
+import com.green.firstproject.common.exception.ResponseResult;
 import com.green.firstproject.home.model.HomeGetRes;
 import com.green.firstproject.project.dto.Project;
 import lombok.RequiredArgsConstructor;

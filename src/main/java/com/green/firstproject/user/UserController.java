@@ -1,7 +1,8 @@
 package com.green.firstproject.user;
 
-import com.green.firstproject.common.ResponseResult;
+import com.green.firstproject.common.exception.ResponseResult;
 import com.green.firstproject.user.model.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,14 @@ public class UserController {
     private final UserService service;
 
 
-    // 1. 유저 로그인 (POST)
+    // 1. 유저 회원가입 (POST)
+    @PostMapping("/sign-up")
+    public ResponseResult userSignUp(@RequestBody UserSignUpReq p) {
+        log.info("Received Request: {}", p);
+        return service.userSignUp(p);
+    }
+
+    // 2. 유저 로그인 (POST)
     @PostMapping("/sign-in")
     public ResponseResult userSignIn(@RequestBody UserSignInReq p) {
         System.out.println("요청된 이메일: " + p.getEmail());
@@ -24,7 +32,7 @@ public class UserController {
     }
 
 
-    // 2. 사용자 정보 조회 (GET)
+    // 3. 사용자 정보 조회 (GET)
     @GetMapping("/{targetUserNo}")
     public ResponseResult selUserInfo(
             @PathVariable long targetUserNo,
@@ -33,4 +41,5 @@ public class UserController {
         UserInfoGetReq req = new UserInfoGetReq(targetUserNo, signedUserNo);
         return service.selUserInfo(req);
     }
+
 }

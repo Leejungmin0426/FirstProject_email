@@ -1,8 +1,6 @@
 package com.green.firstproject.home;
 
-import com.green.firstproject.common.ResponseResult;
-import com.green.firstproject.home.model.HomeGetReq;
-import jakarta.validation.Valid;
+import com.green.firstproject.common.exception.ResponseResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

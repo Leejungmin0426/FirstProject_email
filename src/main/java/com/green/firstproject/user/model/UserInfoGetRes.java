@@ -1,7 +1,6 @@
 package com.green.firstproject.user.model;
-import com.green.firstproject.common.ResponseCode;
-import com.green.firstproject.common.ResponseResult;
-import com.green.firstproject.user.model.dto.UserInfo;
+import com.green.firstproject.common.exception.ResponseCode;
+import com.green.firstproject.common.exception.ResponseResult;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

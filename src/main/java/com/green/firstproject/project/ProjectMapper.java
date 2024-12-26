@@ -2,6 +2,7 @@ package com.green.firstproject.project;
 
 import com.green.firstproject.project.dto.MemberInfo;
 import com.green.firstproject.project.dto.Project;
+import com.green.firstproject.project.model.ProjectSearchUserRes;
 import com.green.firstproject.project.model.ProjectUpdateReq;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +19,6 @@ public interface ProjectMapper {
 
     // 프로젝트 멤버 조회
     List<MemberInfo> getProjectMembers(long projectNo);
+
+   ProjectSearchUserRes searchUserByNickname(String nickname);
 }

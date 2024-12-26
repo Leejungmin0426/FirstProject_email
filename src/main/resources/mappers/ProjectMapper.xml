@@ -41,4 +41,40 @@
         WHERE B.project_no = #{projectNo}
     </select>
 
+
+
+    <!-- 닉네임으로 프로젝트 팀원 검색 -->
+    <select id="searchUserByNickname">
+        SELECT
+        u.user_no AS userNo,
+        u.nickname AS nickname,
+        u.profile_pic AS pic,
+        CASE
+        WHEN COUNT(s.schedule_no) > 0 THEN TRUE
+        ELSE FALSE
+        END AS existSchedule
+        FROM user u
+        LEFT JOIN user_project up ON u.user_no = up.user_no
+        LEFT JOIN schedule s ON up.user_project_no = s.user_project_no
+        WHERE u.nickname = #{nickname}
+        GROUP BY u.user_no, u.nickname, u.profile_pic;
+    </select>
+
+
+<!--    <select id="searchUserByNickname">-->
+<!--        SELECT-->
+<!--        u.user_no AS userNo,-->
+<!--        u.nickname AS nickname,-->
+<!--        u.profile_pic AS pic,-->
+<!--        CASE-->
+<!--        WHEN COUNT(s.schedule_no) > 0 THEN TRUE-->
+<!--        ELSE FALSE-->
+<!--        END AS existSchedule-->
+<!--        FROM user u-->
+<!--        LEFT JOIN user_project up ON u.user_no = up.user_no-->
+<!--        LEFT JOIN schedule s ON up.user_project_no = s.user_project_no-->
+<!--        WHERE u.nickname LIKE CONCAT('%', #{nickname}, '%')-->
+<!--        GROUP BY u.user_no, u.nickname, u.profile_pic-->
+<!--    </select>-->
+
 </mapper>

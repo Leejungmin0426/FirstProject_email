@@ -3,6 +3,21 @@
 
 <mapper namespace="com.green.firstproject.user.UserMapper">
 
+    <!-- 사용자 회원가입 -->
+    <insert id="insertUser">
+        INSERT INTO user (email, user_id, password, nickname)
+        VALUES (#{email}, #{userId}, #{password}, #{nickname})
+    </insert>
+
+    <!-- 중복체크 -->
+    <select id="checkDuplicates">
+        SELECT
+        SUM(email = #{email}) AS emailCount,
+        SUM(user_id = #{userId}) AS userIdCount,
+        SUM(nickname = #{nickname}) AS nicknameCount
+        FROM user
+    </select>
+
 
     <!-- 1. 사용자 로그인 -->
     <select id="userSignIn">

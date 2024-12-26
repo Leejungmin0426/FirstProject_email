@@ -1,7 +1,6 @@
 package com.green.firstproject.home.model;
 
-import com.green.firstproject.common.ResponseCode;
-import com.green.firstproject.common.ResponseResult;
+import com.green.firstproject.common.exception.ResponseResult;
 import com.green.firstproject.project.dto.Project;
 import lombok.Getter;
 import lombok.Setter;

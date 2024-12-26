@@ -1,6 +1,6 @@
 package com.green.firstproject.user.model;
 
-import com.green.firstproject.common.ResponseResult;
+import com.green.firstproject.common.exception.ResponseResult;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 

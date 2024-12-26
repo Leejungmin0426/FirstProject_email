@@ -1,4 +1,4 @@
-package com.green.firstproject.common;
+package com.green.firstproject.common.exception;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

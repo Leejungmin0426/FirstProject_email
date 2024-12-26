@@ -1,4 +1,4 @@
-package com.green.firstproject.common;
+package com.green.firstproject.common.exception;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,18 +1,16 @@
 package com.green.firstproject.user;
 
-import com.green.firstproject.common.MyFileUtils;
-import com.green.firstproject.common.ResponseCode;
-import com.green.firstproject.common.ResponseResult;
+import com.green.firstproject.common.exception.ResponseCode;
+import com.green.firstproject.common.exception.ResponseResult;
 import com.green.firstproject.user.model.*;
-import com.green.firstproject.user.model.dto.UserInfo;
-import com.green.firstproject.user.model.dto.UserLoginInfo;
-import jakarta.servlet.http.HttpSession;
+import com.green.firstproject.user.model.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 
 
 @Service
@@ -112,5 +110,68 @@ public class UserService {
         response.setMyInfo(isMyInfo);
 
         return response;
+    }
+
+
+
+    public ResponseResult userSignUp(UserSignUpReq p) {
+        // 1. 필수 값 검증
+        if (p.getEmail() == null || p.getUserId() == null || p.getPassword() == null || p.getPasswordConfirm() == null) {
+            log.warn("Required fields are missing: {}", p);
+            return ResponseResult.badRequest(ResponseCode.NOT_NULL); // 필수 값 누락
+        }
+
+        // 2. 이메일 형식 검증 (초기 단계)
+        log.info("Validating email format for email: {}", p.getEmail());
+        if (!p.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            log.error("Invalid email format: {}", p.getEmail());
+            return ResponseResult.badRequest(ResponseCode.EMAIL_FORMAT_ERROR); // 이메일 형식 오류
+        }
+
+        // 3. 비밀번호 형식 검증
+        log.info("Validating password format for userId: {}", p.getUserId());
+        if (!PasswordValidator.isValidPassword(p.getPassword())) {
+            log.error("Invalid password format for userId: {}", p.getUserId());
+            return ResponseResult.badRequest(ResponseCode.PASSWORD_FORMAT_ERROR); // 비밀번호 형식 오류
+        }
+
+        // 4. 중복 체크
+        DuplicateCheckResult duplicateCheck = mapper.checkDuplicates(p); // DTO로 반환
+        if (duplicateCheck.getEmailCount() > 0) {
+            log.warn("Duplicate email found: {}", p.getEmail());
+            return ResponseResult.badRequest(ResponseCode.DUPLICATE_EMAIL); // 이메일 중복
+        }
+        if (duplicateCheck.getUserIdCount() > 0) {
+            log.warn("Duplicate userId found: {}", p.getUserId());
+            return ResponseResult.badRequest(ResponseCode.DUPLICATE_ID); // 유저 ID 중복
+        }
+        if (duplicateCheck.getNicknameCount() > 0) {
+            log.warn("Duplicate nickname found: {}", p.getNickname());
+            return ResponseResult.badRequest(ResponseCode.DUPLICATE_NICKNAME); // 닉네임 중복
+        }
+
+        // 5. 비밀번호 확인 검증
+        if (!p.getPassword().equals(p.getPasswordConfirm())) {
+            log.error("Password mismatch for userId: {}", p.getUserId());
+            return ResponseResult.badRequest(ResponseCode.PASSWORD_CHECK_ERROR); // 비밀번호 확인 불일치
+        }
+
+        // 6. 닉네임이 없을 경우 자동 생성
+        if (p.getNickname() == null || p.getNickname().isBlank()) {
+            String generatedNickname = NicknameGenerator.generateDefaultNickname();
+            log.info("Generated default nickname for userId {}: {}", p.getUserId(), generatedNickname);
+            p.setNickname(generatedNickname);
+        }
+
+        // 7. 회원가입 로직 (인증된 상태로 삽입 처리)
+        int insertResult = mapper.insertUser(p);
+        if (insertResult <= 0) {
+            log.error("Failed to insert user data for userId: {}", p.getUserId());
+            return ResponseResult.serverError(); // 회원가입 실패
+        }
+
+        // 8. 성공 응답
+        log.info("UserSignUp successful for userId: {}", p.getUserId());
+        return new UserSignUpRes(ResponseCode.OK.getCode());
     }
 }

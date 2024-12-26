@@ -43,8 +43,7 @@ springdoc:
 logging:
   level:
     root: INFO
-    org.springframework: INFO
+    com.green.firstproject: DEBUG # 애플리케이션 주요 디버깅 로그
+    org.springframework.web: INFO # Spring Web 관련 로그를 INFO로 줄임
     org.apache: WARN
     ch.qos.logback: ERROR
-    org.springframework.boot.logging: ERROR
-    org.springframework.boot.autoconfigure: WARN
