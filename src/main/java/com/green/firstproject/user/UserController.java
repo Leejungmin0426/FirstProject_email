@@ -2,7 +2,6 @@ package com.green.firstproject.user;
 
 import com.green.firstproject.common.exception.ResponseResult;
 import com.green.firstproject.user.model.*;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

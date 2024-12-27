@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Map;
 
 
 @Service
@@ -113,7 +113,6 @@ public class UserService {
     }
 
 
-
     public ResponseResult userSignUp(UserSignUpReq p) {
         // 1. 필수 값 검증
         if (p.getEmail() == null || p.getUserId() == null || p.getPassword() == null || p.getPasswordConfirm() == null) {
@@ -121,7 +120,7 @@ public class UserService {
             return ResponseResult.badRequest(ResponseCode.NOT_NULL); // 필수 값 누락
         }
 
-        // 2. 이메일 형식 검증 (초기 단계)
+        // 2. 이메일 형식 검증
         log.info("Validating email format for email: {}", p.getEmail());
         if (!p.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             log.error("Invalid email format: {}", p.getEmail());
@@ -163,14 +162,19 @@ public class UserService {
             p.setNickname(generatedNickname);
         }
 
-        // 7. 회원가입 로직 (인증된 상태로 삽입 처리)
+        // 7. 비밀번호 암호화
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encryptedPassword = encoder.encode(p.getPassword());
+        p.setPassword(encryptedPassword);
+
+        // 8. 회원가입 로직 (인증된 상태로 삽입 처리)
         int insertResult = mapper.insertUser(p);
         if (insertResult <= 0) {
             log.error("Failed to insert user data for userId: {}", p.getUserId());
             return ResponseResult.serverError(); // 회원가입 실패
         }
 
-        // 8. 성공 응답
+        // 9. 성공 응답
         log.info("UserSignUp successful for userId: {}", p.getUserId());
         return new UserSignUpRes(ResponseCode.OK.getCode());
     }
