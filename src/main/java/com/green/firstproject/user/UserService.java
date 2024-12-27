@@ -71,33 +71,22 @@ public class UserService {
 
         // 1. 로그인 여부 검증
         if (!isUserLoggedIn(p.getSignedUserNo())) {
-            log.warn("Unauthorized access: signedUserNo={}", p.getSignedUserNo());
             return ResponseResult.badRequest(ResponseCode.NO_FORBIDDEN); // 로그인하지 않은 사용자
         }
 
         // 2. 데이터 유효성 검증
         if (!isValidUserRequest(p)) {
-            log.warn("Invalid request parameters: {}", p);
             return ResponseResult.badRequest(ResponseCode.NOT_NULL); // 필수 값 검증 실패
         }
 
         // 3. 사용자 정보 조회
         UserInfo userInfo = mapper.selUserInfo(p);
         if (userInfo == null) {
-            log.warn("User not found for signedUserNo={} or targetUserNo={}",
-                    p.getSignedUserNo(), p.getTargetUserNo());
             return ResponseResult.badRequest(ResponseCode.NO_EXIST_USER); // 유저 정보 없음
         }
 
         // 4. 본인 여부 확인
         boolean isMyInfo = (p.getSignedUserNo() == p.getTargetUserNo());
-        if (isMyInfo) {
-            log.debug("User requested their own information. signedUserNo={}, targetUserNo={}",
-                    p.getSignedUserNo(), p.getTargetUserNo());
-        } else {
-            log.debug("User requested another user's information. signedUserNo={}, targetUserNo={}",
-                    p.getSignedUserNo(), p.getTargetUserNo());
-        }
 
         // 5. UserInfoGetRes 반환
         UserInfoGetRes response = new UserInfoGetRes();
@@ -116,7 +105,6 @@ public class UserService {
     public ResponseResult userSignUp(UserSignUpReq p) {
         // 1. 필수 값 검증
         if (p.getEmail() == null || p.getUserId() == null || p.getPassword() == null || p.getPasswordConfirm() == null) {
-            log.warn("Required fields are missing: {}", p);
             return ResponseResult.badRequest(ResponseCode.NOT_NULL); // 필수 값 누락
         }
 
@@ -130,35 +118,29 @@ public class UserService {
         // 3. 비밀번호 형식 검증
         log.info("Validating password format for userId: {}", p.getUserId());
         if (!PasswordValidator.isValidPassword(p.getPassword())) {
-            log.error("Invalid password format for userId: {}", p.getUserId());
             return ResponseResult.badRequest(ResponseCode.PASSWORD_FORMAT_ERROR); // 비밀번호 형식 오류
         }
 
         // 4. 중복 체크
         DuplicateCheckResult duplicateCheck = mapper.checkDuplicates(p); // DTO로 반환
         if (duplicateCheck.getEmailCount() > 0) {
-            log.warn("Duplicate email found: {}", p.getEmail());
             return ResponseResult.badRequest(ResponseCode.DUPLICATE_EMAIL); // 이메일 중복
         }
         if (duplicateCheck.getUserIdCount() > 0) {
-            log.warn("Duplicate userId found: {}", p.getUserId());
             return ResponseResult.badRequest(ResponseCode.DUPLICATE_ID); // 유저 ID 중복
         }
         if (duplicateCheck.getNicknameCount() > 0) {
-            log.warn("Duplicate nickname found: {}", p.getNickname());
             return ResponseResult.badRequest(ResponseCode.DUPLICATE_NICKNAME); // 닉네임 중복
         }
 
         // 5. 비밀번호 확인 검증
         if (!p.getPassword().equals(p.getPasswordConfirm())) {
-            log.error("Password mismatch for userId: {}", p.getUserId());
             return ResponseResult.badRequest(ResponseCode.PASSWORD_CHECK_ERROR); // 비밀번호 확인 불일치
         }
 
         // 6. 닉네임이 없을 경우 자동 생성
         if (p.getNickname() == null || p.getNickname().isBlank()) {
             String generatedNickname = NicknameGenerator.generateDefaultNickname();
-            log.info("Generated default nickname for userId {}: {}", p.getUserId(), generatedNickname);
             p.setNickname(generatedNickname);
         }
 
@@ -170,12 +152,10 @@ public class UserService {
         // 8. 회원가입 로직 (인증된 상태로 삽입 처리)
         int insertResult = mapper.insertUser(p);
         if (insertResult <= 0) {
-            log.error("Failed to insert user data for userId: {}", p.getUserId());
             return ResponseResult.serverError(); // 회원가입 실패
         }
 
         // 9. 성공 응답
-        log.info("UserSignUp successful for userId: {}", p.getUserId());
         return new UserSignUpRes(ResponseCode.OK.getCode());
     }
 }

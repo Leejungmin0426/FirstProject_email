@@ -182,3 +182,5 @@
  {executed in 1 msec}
 [2024-12-27 09:50:05 DEBUGhttp-nio-8080-exec-1] [com.green.firstproject.user.UserMapper.insertUser] <==    Updates: 1
 [2024-12-27 09:50:05 INFO http-nio-8080-exec-1] [com.green.firstproject.user.UserService] UserSignUp successful for userId: lovely
+[2024-12-27 10:16:34 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2024-12-27 10:16:34 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
