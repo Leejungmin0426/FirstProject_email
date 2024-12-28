@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green.firstproject.email.EmailMapper">
+
+    <!-- 사용자 데이터 가져오기 -->
+    <select id="sendEmail">
+        SELECT user_no AS userNo, email, enabled
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <!-- 인증 코드 저장 -->
+    <insert id="insertAuthCode">
+        INSERT INTO email_auth (email, auth_code, created_at, is_verified)
+        VALUES (#{email}, #{authCode}, NOW(), 0)
+    </insert>
+
+
+</mapper>

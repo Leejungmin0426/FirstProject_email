@@ -15,6 +15,8 @@ public interface UserMapper {
     UserLoginInfo userSignIn(String email);
     UserInfo selUserInfo (UserInfoGetReq p);
 
+
+
     DuplicateCheckResult checkDuplicates(UserSignUpReq p); // 중복 체크, BigDecimal 대응
     int insertUser(UserSignUpReq p); // 유저 등록
 }

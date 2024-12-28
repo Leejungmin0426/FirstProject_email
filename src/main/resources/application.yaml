@@ -24,6 +24,29 @@ spring:
     multipart:
       max-file-size: 15MB
       maxRequestSize: 30MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: skdmldlgpdus0426@gmail.com
+    password: zfhlnlsszvjwoufd
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.debug: true
+
+email:
+  naver:
+    host: smtp.naver.com
+    port: 465
+    username: skdml9546@naver.com
+    password: N5LX7MW8Y4ZU
+    protocol: smtp
+    properties:
+    mail.smtp.auth: true
+    mail.smtp.starttls.enable: true
+    mail.smtp.ssl.trust: smtp.naver.com
+    mail.debug: true
 #  jackson:
 #    default-property-inclusion: non-null #응답 JSON을 만들 때 null인 속성은 제외
 
@@ -42,8 +65,9 @@ springdoc:
 
 logging:
   level:
-    root: INFO
+    root: info
     com.green.firstproject: DEBUG # 애플리케이션 주요 디버깅 로그
     org.springframework.web: INFO # Spring Web 관련 로그를 INFO로 줄임
     org.apache: WARN
     ch.qos.logback: ERROR
+    org.springframework.mail: DEBUG

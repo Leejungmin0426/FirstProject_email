@@ -18,7 +18,6 @@ public class UserController {
     // 1. 유저 회원가입 (POST)
     @PostMapping("/sign-up")
     public ResponseResult userSignUp(@RequestBody UserSignUpReq p) {
-        log.info("Received Request: {}", p);
         return service.userSignUp(p);
     }
 

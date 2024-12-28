@@ -27,7 +27,7 @@ public class UserSignUpReq {
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,15}$",
 
-            message = "비밀번호는 8자 이상 16자 미만이며, 대문자, 소문자, 숫자, 특수문자를 최소 1개 포함해야 합니다."
+            message = "비밀번호는 8자 이상 16자 미만이며, 영문 소문자, 숫자, 특수문자를 최소 1개 포함해야 합니다."
     )
     private String password;
 
@@ -37,4 +37,20 @@ public class UserSignUpReq {
 
     @Schema(description = "닉네임",  example = "미니공쥬", requiredMode = Schema.RequiredMode.REQUIRED)
     private String nickname;
+
+
+    @Schema(description = "활성화 여부", example = "0", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private int enabled = 0; // 이메일 인증 완료 전 기본값
+
+    @Schema(description = "첫 로그인 여부", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private int firstLogin = 1; // 회원가입 시 기본값
+
+    /**
+     * 비밀번호와 비밀번호 확인이 일치하는지 검증하는 메서드
+     *
+     * @return true if password and passwordConfirm match, false otherwise
+     */
+    public boolean isPasswordConfirmed() {
+        return this.password != null && this.password.equals(this.passwordConfirm);
+    }
     }
